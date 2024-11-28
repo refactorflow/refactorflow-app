@@ -1,29 +1,97 @@
-# Create T3 App
+# Architecture Core
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+## 1. Domain Layer (`/core/domain`)
 
-## What's next? How do I make an app with this?
+### Objectif
+Contient les entités métier et la logique métier pure, indépendante de toute infrastructure.
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+### Structure
+- `/entities`: Classes représentant les objets métier
+  - Pas de dépendances externes
+  - Logique métier pure
+  - Validation des règles métier
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## 2. Application Layer (`/core/application`)
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+### Objectif
+Orchestration des cas d'utilisation et logique applicative.
 
-## Learn More
+### Structure
+- `/dtos`: Data Transfer Objects pour la validation et transformation
+  - Validation avec Zod
+  - Séparation entre DTO d'entrée et de sortie
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+- `/errors`: Gestion centralisée des erreurs
+  - Hiérarchie d'erreurs personnalisées
+  - Messages d'erreur standardisés
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- `/ports`: Interfaces pour l'infrastructure
+  - Définition des contrats pour les repositories
+  - Abstraction de l'infrastructure
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+- `/services`: Services applicatifs
+  - Orchestration des opérations CRUD
+  - Validation des données
+  - Gestion des erreurs
 
-## How do I deploy this?
+- `/use-cases`: Cas d'utilisation métier complexes
+  - Orchestration de plusieurs services
+  - Logique métier spécifique
+  - Gestion des transactions
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+## 3. Infrastructure Layer (`/core/infrastructure`)
+
+### Objectif
+Implémentation concrète des interfaces définies dans les ports.
+
+### Structure
+- `/repositories`: Implémentations des repositories
+  - Interaction avec la base de données
+  - Mapping entre entités Prisma et domaine
+  - Gestion des transactions
+
+### Principes Clés
+
+1. **Dependency Rule**
+   - Les couches internes ne dépendent pas des couches externes
+   - Les dépendances pointent vers l'intérieur
+
+2. **Separation of Concerns**
+   - Chaque couche a une responsabilité unique
+   - Découplage fort entre les couches
+
+3. **Dependency Injection**
+   - Inversion des dépendances
+   - Facilite les tests unitaires
+
+4. **Error Handling**
+   - Gestion centralisée des erreurs
+   - Transformation des erreurs techniques en erreurs métier
+
+### Flow des Données
+
+1. Request → Controller
+2. Controller → Use Case/Service
+3. Service → Repository (via Port)
+4. Repository → Database
+5. Database → Domain Entity
+6. Domain Entity → DTO
+7. DTO → Response
+
+### Bonnes Pratiques
+
+1. **Validation**
+   - DTOs pour la validation d'entrée
+   - Zod pour le typage et la validation
+
+2. **Error Handling**
+   - Try/catch dans les services
+   - Erreurs personnalisées pour chaque cas
+
+3. **Testing**
+   - Tests unitaires pour chaque couche
+   - Mocks pour les dépendances
+
+4. **Documentation**
+   - Documentation des interfaces
+   - Documentation des cas d'utilisation

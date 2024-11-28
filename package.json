@@ -18,7 +18,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.2",
