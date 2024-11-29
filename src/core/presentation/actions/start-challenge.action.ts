@@ -13,7 +13,7 @@ const schema = z.object({
 
 export const startChallengeAction = authActionClient.schema(schema).action(async ({ parsedInput, ctx }) => {
   try {
-    await container.getChallengeService().startChallenge(parsedInput.challengeId, ctx.user.id);
+    await container.getStartChallengeUseCase().execute(ctx.user.id, parsedInput.challengeId, ctx.user.email!);
   } catch (error) {
     throw error;
   }

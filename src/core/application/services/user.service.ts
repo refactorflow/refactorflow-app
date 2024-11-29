@@ -8,6 +8,7 @@ export class UserService {
   async getUserProfile(userId: string): Promise<UserResponseDTO> {
     try {
       const user = await this.authRepository.getUserById(userId);
+
       if (!user) {
         throw new NotFoundError('User');
       }

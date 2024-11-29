@@ -18,6 +18,7 @@
     "unicorn/prefer-module": "off",
     "unicorn/no-null": "off",
     "unicorn/no-useless-undefined": "off",
+    "unicorn/prefer-event-target": "off",
     "playwright/no-standalone-expect": "off"
   },
   "overrides": [
