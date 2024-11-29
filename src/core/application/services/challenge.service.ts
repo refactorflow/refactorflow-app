@@ -68,4 +68,34 @@ export class ChallengeService {
       throw new BadRequestError('Error incrementing submission count', { error });
     }
   }
+
+  async startChallenge(challengeId: string, userId: string): Promise<void> {
+    try {
+      const challenge = await this.getChallengeById(challengeId);
+      if (!challenge) {
+        throw new NotFoundError('Challenge');
+      }
+
+      const isAlreadyStarted = await this.challengeRepository.isStartedByUser(challengeId, userId);
+      if (isAlreadyStarted) {
+        throw new BadRequestError('Challenge already started');
+      }
+
+      await this.challengeRepository.startChallenge(challengeId, userId);
+    } catch (error) {
+      if (error instanceof NotFoundError || error instanceof BadRequestError) {
+        throw error;
+      }
+      throw new BadRequestError('Error starting challenge', { error });
+    }
+  }
+
+  async getStartedChallenges(userId: string): Promise<ChallengeResponseDTO[]> {
+    try {
+      const challenges = await this.challengeRepository.getStartedChallenges(userId);
+      return challenges.map(challenge => ChallengeResponseDTO.parse(challenge));
+    } catch (error) {
+      throw new BadRequestError('Error fetching started challenges', { error });
+    }
+  }
 }

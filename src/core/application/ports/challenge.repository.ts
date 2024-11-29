@@ -15,4 +15,8 @@ export interface ChallengeRepository {
   deleteChallenge(id: string): Promise<void>;
   updateSubmissionCount(id: string): Promise<void>;
   updateAverageRating(id: string): Promise<void>;
+
+  startChallenge(userId: string, challengeId: string): Promise<void>;
+  getStartedChallenges(userId: string): Promise<Challenge[]>;
+  isStartedByUser(userId: string, challengeId: string): Promise<boolean>;
 }
