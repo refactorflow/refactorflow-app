@@ -1,5 +1,7 @@
 import { Plus, Swords } from 'lucide-react';
 
+import { LogoutButton } from '@/core/presentation/features/authentication/logout-button';
+
 export const challengesNavigationItems = [
   {
     title: 'All Challenges',
@@ -13,15 +15,9 @@ export const challengesNavigationItems = [
   },
 ];
 
-import { Button } from '@/core/presentation/components/common/ui/button';
-
 export const sidebarFooterDropdownItems = [
   {
     label: 'Sign out',
-    component: (
-      <Button variant="link" size="sm" className="w-full justify-start">
-        Sign out
-      </Button>
-    ),
+    component: <LogoutButton variant="link" size="sm" className="w-full justify-start" />,
   },
 ];
