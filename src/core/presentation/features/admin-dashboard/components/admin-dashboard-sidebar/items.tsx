@@ -1,5 +1,6 @@
 import { Plus, Swords } from 'lucide-react';
 
+import { URL } from '@/config/constants/url.constant';
 import { LogoutButton } from '@/core/presentation/features/authentication/logout-button';
 
 export const challengesNavigationItems = [
@@ -10,7 +11,7 @@ export const challengesNavigationItems = [
   },
   {
     title: 'Create Challenge',
-    url: '#',
+    url: URL.CREATECHALLENGE,
     icon: Plus,
   },
 ];
