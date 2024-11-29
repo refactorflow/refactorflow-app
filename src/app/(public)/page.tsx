@@ -6,6 +6,7 @@ export default async function HomePage() {
   const session = await auth();
 
   const challenges = await container.getChallengeService().getAllChallenges();
+  console.log(challenges);
 
   return (
     <div>

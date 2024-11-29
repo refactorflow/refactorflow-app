@@ -39,8 +39,7 @@ export class ChallengeService {
   }): Promise<ChallengeResponseDTO[]> {
     try {
       const challenges = await this.challengeRepository.getAllChallenges(filters);
-
-      return await Promise.all(challenges.map(challenge => ChallengeResponseDTO.parse(challenge)));
+      return challenges.map(challenge => ChallengeResponseDTO.parse(challenge));
     } catch (error) {
       throw new BadRequestError('Error fetching challenges', { error });
     }

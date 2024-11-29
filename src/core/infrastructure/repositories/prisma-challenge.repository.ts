@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Challenge as PrismaChallenge, PrismaClient } from '@prisma/client';
 
 import { ChallengeRepository } from '@/core/application/ports/challenge.repository';
 import { Challenge } from '@/core/domain/entities/challenge.entity';
@@ -13,8 +13,10 @@ export class PrismaChallengeRepository implements ChallengeRepository {
       data: {
         ...challenge,
         categoryMain: challenge.category.main,
+        subCategories: challenge.category.subCategory,
       },
     });
+
     return this.mapToDomain(prismaChallenge);
   }
 
@@ -27,6 +29,7 @@ export class PrismaChallengeRepository implements ChallengeRepository {
 
   async getAllChallenges(): Promise<Challenge[]> {
     const challenges = await this.prisma.challenge.findMany();
+
     return challenges.map(challenge => this.mapToDomain(challenge));
   }
 
@@ -58,20 +61,38 @@ export class PrismaChallengeRepository implements ChallengeRepository {
     });
   }
 
-  private mapToDomain(prismaChallenge: any): Challenge {
+  private mapToDomain(prismaChallenge: PrismaChallenge): Challenge {
+    const challengeCategory = {
+      main: prismaChallenge.categoryMain,
+      subCategory: prismaChallenge.subCategories || [],
+    };
+
+    const challengeRequirements = (prismaChallenge.requirements as { technical: string[]; functional: string[] }) ?? {
+      technical: [],
+      functional: [],
+    };
+
+    const challengeExpectedOutput = prismaChallenge.expectedOutput
+      ? {
+          screenshots: (prismaChallenge.expectedOutput as any)?.screenshots ?? [],
+          videoDemo: (prismaChallenge.expectedOutput as any)?.videoDemo,
+        }
+      : undefined;
+
     return new Challenge(
       prismaChallenge.id,
       prismaChallenge.title,
       prismaChallenge.description,
       prismaChallenge.difficulty,
-      prismaChallenge.category,
+      challengeCategory,
       prismaChallenge.starterCodeUrl,
-      prismaChallenge.requirements,
+      challengeRequirements,
       prismaChallenge.createdAt,
       prismaChallenge.updatedAt,
       prismaChallenge.authorId,
       prismaChallenge.submissionCount,
       prismaChallenge.averageRating,
+      challengeExpectedOutput,
     );
   }
 }
