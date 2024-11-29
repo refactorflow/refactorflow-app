@@ -1,14 +1,9 @@
-import { container } from '@/core/infrastructure/config/container';
-import { ChallengeCard } from '@/core/presentation/features/challenges/challenge-card';
+import { ChallengesList } from '@/core/presentation/features/challenges/challenges-list';
 
-export default async function ChallengesPage() {
-  const challenges = await container.getChallengeService().getAllChallenges();
-
+export default function ChallengesPage() {
   return (
     <div>
-      {challenges.map(challenge => (
-        <ChallengeCard key={challenge.id} challenge={challenge} />
-      ))}
+      <ChallengesList />
     </div>
   );
 }
