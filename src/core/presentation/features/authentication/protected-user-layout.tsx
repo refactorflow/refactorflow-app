@@ -4,10 +4,10 @@ import type { PropsWithChildren } from 'react';
 import { URL } from '@/config/constants/url.constant';
 import { auth } from '@/config/server/auth';
 
-export default async function ProtectedUserLayout({ children }: PropsWithChildren) {
+export default async function ProtectedAuthenticationLayout({ children }: PropsWithChildren) {
   const session = await auth();
 
-  if (session?.user.role !== 'USER') {
+  if (!session) {
     redirect(URL.HOME);
   }
 

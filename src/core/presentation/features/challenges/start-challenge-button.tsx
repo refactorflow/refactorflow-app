@@ -14,6 +14,7 @@ type StartChallengeButtonProps = {
 export const StartChallengeButton = ({ challenge, isStarted }: StartChallengeButtonProps) => {
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   function handleStartChallenge() {
     startTransition(async () => {
@@ -34,6 +35,7 @@ export const StartChallengeButton = ({ challenge, isStarted }: StartChallengeBut
         {isStarted ? 'Visit Challenge Hub' : 'Start Challenge'}
       </ButtonSubmit>
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      {message && <p className="text-green-500">{message}</p>}
     </Fragment>
   );
 };
