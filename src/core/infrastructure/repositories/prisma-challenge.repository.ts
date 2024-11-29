@@ -2,6 +2,7 @@ import { Challenge as PrismaChallenge, PrismaClient } from '@prisma/client';
 
 import { ChallengeRepository } from '@/core/application/ports/challenge.repository';
 import { Challenge } from '@/core/domain/entities/challenge.entity';
+import { generateSlug } from '@/core/domain/utils/generate-slug';
 
 export class PrismaChallengeRepository implements ChallengeRepository {
   constructor(private prisma: PrismaClient) {}
@@ -14,6 +15,7 @@ export class PrismaChallengeRepository implements ChallengeRepository {
         ...challenge,
         categoryMain: challenge.category.main,
         subCategories: challenge.category.subCategory,
+        slug: generateSlug(challenge.title),
       },
     });
 
@@ -23,6 +25,13 @@ export class PrismaChallengeRepository implements ChallengeRepository {
   async getChallengeById(id: string): Promise<Challenge | null> {
     const prismaChallenge = await this.prisma.challenge.findUnique({
       where: { id },
+    });
+    return prismaChallenge ? this.mapToDomain(prismaChallenge) : null;
+  }
+
+  async getChallengeBySlug(slug: string): Promise<Challenge | null> {
+    const prismaChallenge = await this.prisma.challenge.findUnique({
+      where: { slug },
     });
     return prismaChallenge ? this.mapToDomain(prismaChallenge) : null;
   }
@@ -82,6 +91,7 @@ export class PrismaChallengeRepository implements ChallengeRepository {
     return new Challenge(
       prismaChallenge.id,
       prismaChallenge.title,
+      prismaChallenge.slug,
       prismaChallenge.description,
       prismaChallenge.difficulty,
       challengeCategory,

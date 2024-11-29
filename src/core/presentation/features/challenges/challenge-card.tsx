@@ -64,7 +64,7 @@ export const ChallengeCard = ({ challenge }: ChallengeCardProps) => {
 
       <CardFooter>
         <Button>
-          <Link href={`/challenges/${challenge.id}`}>Voir le challenge</Link>
+          <Link href={`/challenges/${challenge.slug}`}>Voir le challenge</Link>
         </Button>
       </CardFooter>
     </Card>

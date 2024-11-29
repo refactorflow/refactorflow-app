@@ -2,6 +2,7 @@ export class Challenge {
   constructor(
     public id: string,
     public title: string,
+    public slug: string,
     public description: string,
     public difficulty: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED' | 'EXPERT',
     public category: {

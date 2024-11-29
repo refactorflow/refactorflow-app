@@ -5,6 +5,7 @@ export interface ChallengeRepository {
     challenge: Omit<Challenge, 'id' | 'createdAt' | 'updatedAt' | 'submissionCount' | 'averageRating'>,
   ): Promise<Challenge>;
   getChallengeById(id: string): Promise<Challenge | null>;
+  getChallengeBySlug(slug: string): Promise<Challenge | null>;
   getAllChallenges(filters?: {
     difficulty?: Challenge['difficulty'];
     category?: Challenge['category']['main'];

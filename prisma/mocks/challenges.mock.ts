@@ -3,6 +3,7 @@ import { CategoryMain, Difficulty } from '@prisma/client';
 export const challengesMOCK = [
   {
     title: 'API REST Node.js',
+    slug: 'api-rest-nodejs',
     description: 'Développer une API REST avec Node.js et Express',
     difficulty: Difficulty.INTERMEDIATE,
     categoryMain: CategoryMain.BACKEND,
