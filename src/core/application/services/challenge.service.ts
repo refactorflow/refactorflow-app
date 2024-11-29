@@ -98,4 +98,10 @@ export class ChallengeService {
       throw new BadRequestError('Error fetching started challenges', { error });
     }
   }
+
+  async isStartedByUser(challengeId: string, userId: string | undefined): Promise<boolean> {
+    if (!userId) return false;
+
+    return this.challengeRepository.isStartedByUser(challengeId, userId);
+  }
 }

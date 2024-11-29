@@ -1,7 +1,7 @@
 import { createSafeActionClient, DEFAULT_SERVER_ERROR_MESSAGE } from 'next-safe-action';
 
 import { auth } from '@/config/server/auth';
-import { CustomError } from '@/core/application/errors/custom.error';
+import { CustomError, UnauthorizedError } from '@/core/application/errors/custom.error';
 
 export const actionClient = createSafeActionClient({
   handleServerError(e) {
@@ -18,5 +18,9 @@ export const actionClient = createSafeActionClient({
 export const authActionClient = actionClient.use(async ({ next }) => {
   const session = await auth();
 
-  return next({ ctx: { user: session?.user } });
+  if (!session?.user) {
+    throw new UnauthorizedError('Please login to continue');
+  }
+
+  return next({ ctx: { user: session.user } });
 });
