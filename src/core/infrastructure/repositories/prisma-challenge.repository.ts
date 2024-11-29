@@ -70,6 +70,39 @@ export class PrismaChallengeRepository implements ChallengeRepository {
     });
   }
 
+  async startChallenge(challengeId: string, userId: string): Promise<void> {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        startedChallenges: {
+          connect: { id: challengeId },
+        },
+      },
+    });
+  }
+
+  async getStartedChallenges(userId: string): Promise<Challenge[]> {
+    const challenges = await this.prisma.challenge.findMany({
+      where: { startedBy: { some: { id: userId } } },
+    });
+    return challenges.map(challenge => this.mapToDomain(challenge));
+  }
+
+  async isStartedByUser(challengeId: string, userId: string): Promise<boolean> {
+    const count = await this.prisma.challenge.count({
+      where: {
+        id: challengeId,
+        startedBy: {
+          some: {
+            id: userId,
+          },
+        },
+      },
+    });
+
+    return count > 0;
+  }
+
   private mapToDomain(prismaChallenge: PrismaChallenge): Challenge {
     const challengeCategory = {
       main: prismaChallenge.categoryMain,
