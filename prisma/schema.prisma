@@ -43,21 +43,22 @@ model Session {
 }
 
 model User {
-    id               String       @id @default(cuid())
-    name             String?
-    email            String?      @unique
-    emailVerified    DateTime?
-    image            String?
-    bio              String?      @db.Text
-    createdAt        DateTime     @default(now())
-    updatedAt        DateTime     @updatedAt
-    role             Role         @default(USER)
-    accounts         Account[]
-    sessions         Session[]
-    submissions      Submission[]
-    comments         Comment[]
-    ratings          Rating[]
-    completedChallenges Challenge[] @relation("CompletedChallenges")
+    id                  String       @id @default(cuid())
+    name                String?
+    email               String?      @unique
+    emailVerified       DateTime?
+    image               String?
+    bio                 String?      @db.Text
+    createdAt           DateTime     @default(now())
+    updatedAt           DateTime     @updatedAt
+    role                Role         @default(USER)
+    accounts            Account[]
+    sessions            Session[]
+    submissions         Submission[]
+    comments            Comment[]
+    ratings             Rating[]
+    completedChallenges Challenge[]  @relation("CompletedChallenges")
+    startedChallenges   Challenge[]  @relation("StartedChallenges")
 }
 
 model VerificationToken {
@@ -77,8 +78,8 @@ model Challenge {
     categoryMain    CategoryMain
     subCategories   String[]
     starterCodeUrl  String
-    requirements    Json         // Stored as JSON {functional: string[], technical: string[]}
-    expectedOutput  Json?        // Stored as JSON {screenshots: string[], videoDemo?: string}
+    requirements    Json // Stored as JSON {functional: string[], technical: string[]}
+    expectedOutput  Json? // Stored as JSON {screenshots: string[], videoDemo?: string}
     createdAt       DateTime     @default(now())
     updatedAt       DateTime     @updatedAt
     authorId        String
@@ -88,44 +89,45 @@ model Challenge {
     ratings         Rating[]
     tags            Tag[]        @relation("ChallengeTags")
     completedBy     User[]       @relation("CompletedChallenges")
+    startedBy       User[]       @relation("StartedChallenges")
 
     @@index([difficulty, categoryMain])
 }
 
 model Submission {
-    id                  String    @id @default(cuid())
-    challengeId         String
-    userId              String
-    repositoryUrl       String
-    livePreviewUrl      String?
-    description         String    @db.Text
-    implementationDetails String? @db.Text
-    status             SubmissionStatus @default(PENDING)
-    upvotes            Int       @default(0)
-    downvotes          Int       @default(0)
-    createdAt          DateTime  @default(now())
-    updatedAt          DateTime  @updatedAt
-    challenge          Challenge @relation(fields: [challengeId], references: [id])
-    user               User      @relation(fields: [userId], references: [id])
-    comments           Comment[]
+    id                    String           @id @default(cuid())
+    challengeId           String
+    userId                String
+    repositoryUrl         String
+    livePreviewUrl        String?
+    description           String           @db.Text
+    implementationDetails String?          @db.Text
+    status                SubmissionStatus @default(PENDING)
+    upvotes               Int              @default(0)
+    downvotes             Int              @default(0)
+    createdAt             DateTime         @default(now())
+    updatedAt             DateTime         @updatedAt
+    challenge             Challenge        @relation(fields: [challengeId], references: [id])
+    user                  User             @relation(fields: [userId], references: [id])
+    comments              Comment[]
 
     @@index([challengeId, status])
     @@index([userId])
 }
 
 model Comment {
-    id              String    @id @default(cuid())
+    id              String     @id @default(cuid())
     submissionId    String
     userId          String
-    content         String    @db.Text
-    createdAt       DateTime  @default(now())
-    updatedAt       DateTime  @updatedAt
+    content         String     @db.Text
+    createdAt       DateTime   @default(now())
+    updatedAt       DateTime   @updatedAt
     parentCommentId String?
-    reactions       Json      // Stored as JSON array of {type: string, count: number, userIds: string[]}
+    reactions       Json // Stored as JSON array of {type: string, count: number, userIds: string[]}
     submission      Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-    user            User      @relation(fields: [userId], references: [id])
-    parentComment   Comment?  @relation("CommentReplies", fields: [parentCommentId], references: [id])
-    replies         Comment[] @relation("CommentReplies")
+    user            User       @relation(fields: [userId], references: [id])
+    parentComment   Comment?   @relation("CommentReplies", fields: [parentCommentId], references: [id])
+    replies         Comment[]  @relation("CommentReplies")
 
     @@index([submissionId])
     @@index([userId])
@@ -147,10 +149,10 @@ model Rating {
 }
 
 model Tag {
-    id           String      @id @default(cuid())
-    name         String      @unique
-    category     TagCategory
-    challenges   Challenge[] @relation("ChallengeTags")
+    id         String      @id @default(cuid())
+    name       String      @unique
+    category   TagCategory
+    challenges Challenge[] @relation("ChallengeTags")
 
     @@index([category])
 }
