@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const CreateChallengeDTO = z.object({
   title: z.string().min(5).max(100),
+  slug: z.string().min(5).max(100),
   description: z.string().min(20),
   difficulty: z.enum(['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT']),
   category: z.object({
@@ -15,8 +16,8 @@ export const CreateChallengeDTO = z.object({
   }),
   expectedOutput: z
     .object({
-      screenshots: z.array(z.string().url()),
-      videoDemo: z.string().url().optional(),
+      screenshots: z.array(z.string()),
+      videoDemo: z.string().optional(),
     })
     .optional(),
   authorId: z.string(),
@@ -26,6 +27,14 @@ export const ChallengeResponseDTO = CreateChallengeDTO.extend({
   id: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  submissionCount: z.number().default(0),
+  averageRating: z.number().default(0),
+  expectedOutput: z
+    .object({
+      screenshots: z.array(z.string().url()),
+      videoDemo: z.string().url().optional(),
+    })
+    .nullish(),
 });
 
 export type CreateChallengeDTO = z.infer<typeof CreateChallengeDTO>;

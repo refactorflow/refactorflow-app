@@ -32,6 +32,22 @@ export class ChallengeService {
     }
   }
 
+  async getChallengeBySlug(slug: string): Promise<ChallengeResponseDTO> {
+    try {
+      const challenge = await this.challengeRepository.getChallengeBySlug(slug);
+
+      if (!challenge) {
+        throw new NotFoundError('Challenge');
+      }
+      return ChallengeResponseDTO.parse(challenge);
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
+      }
+      throw new BadRequestError('Error fetching challenge', { error });
+    }
+  }
+
   async getAllChallenges(filters?: {
     difficulty?: Challenge['difficulty'];
     category?: Challenge['category']['main'];
@@ -39,8 +55,7 @@ export class ChallengeService {
   }): Promise<ChallengeResponseDTO[]> {
     try {
       const challenges = await this.challengeRepository.getAllChallenges(filters);
-
-      return await Promise.all(challenges.map(challenge => ChallengeResponseDTO.parse(challenge)));
+      return challenges.map(challenge => ChallengeResponseDTO.parse(challenge));
     } catch (error) {
       throw new BadRequestError('Error fetching challenges', { error });
     }
