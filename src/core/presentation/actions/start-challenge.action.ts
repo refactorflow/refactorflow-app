@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 
 import { authActionClient } from '@/config/libs/next-safe-action';
+import { EmailSendingError } from '@/core/application/errors/custom.error';
 import { container } from '@/core/infrastructure/config/container';
 
 const schema = z.object({
@@ -15,6 +16,10 @@ export const startChallengeAction = authActionClient.schema(schema).action(async
   try {
     await container.getStartChallengeUseCase().execute(ctx.user.id, parsedInput.challengeId, ctx.user.email!);
   } catch (error) {
+    if (error instanceof EmailSendingError) {
+      return { errorMessage: error.message };
+    }
+
     throw error;
   }
 

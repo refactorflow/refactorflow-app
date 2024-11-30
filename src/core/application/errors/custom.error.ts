@@ -49,3 +49,9 @@ export class ConflictError extends CustomError {
     super(message, 409, 'CONFLICT');
   }
 }
+
+export class EmailSendingError extends CustomError {
+  constructor(message: string) {
+    super(message, 500, 'EMAIL_SENDING_ERROR');
+  }
+}
