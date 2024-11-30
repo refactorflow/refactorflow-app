@@ -8,16 +8,22 @@ export class UserService {
   async getUserProfile(userId: string): Promise<UserResponseDTO> {
     try {
       const user = await this.authRepository.getUserById(userId);
+      if (!user) throw new NotFoundError('User');
 
-      if (!user) {
-        throw new NotFoundError('User');
-      }
-
-      return UserResponseDTO.parse(user);
+      return UserResponseDTO.parse({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+        bio: user.bio,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        completedChallenges: user.completedChallenges,
+        solutions: user.solutions.map(s => s.id),
+        role: user.role,
+      });
     } catch (error) {
-      if (error instanceof NotFoundError) {
-        throw error;
-      }
+      if (error instanceof NotFoundError) throw error;
       throw new BadRequestError('Error fetching user profile', { error });
     }
   }
@@ -72,7 +78,7 @@ export class UserService {
         throw new NotFoundError('User');
       }
 
-      return UserResponseDTO.pick({ submissions: true }).parse(user).submissions;
+      return UserResponseDTO.pick({ solutions: true }).parse(user).solutions;
     } catch (error) {
       if (error instanceof NotFoundError) {
         throw error;

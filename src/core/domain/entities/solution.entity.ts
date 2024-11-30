@@ -1,17 +1,15 @@
 export class Solution {
   constructor(
-    public id: string,
-    public challengeId: string,
-    public userId: string,
-    public title: string,
-    public repositoryUrl: string,
-    public description: string,
-    public votes: {
-      upvotes: number;
-      downvotes: number;
-    },
-    public createdAt: Date,
-    public updatedAt: Date,
-    public implementationDetails?: string,
+    public readonly id: string,
+    public readonly challengeId: string,
+    public readonly userId: string,
+    public readonly title: string,
+    public readonly repositoryUrl: string,
+    public readonly description: string,
+    public readonly upvotes: number,
+    public readonly downvotes: number,
+    public readonly implementationDetails: string | null,
+    public readonly createdAt: Date,
+    public readonly updatedAt: Date,
   ) {}
 }

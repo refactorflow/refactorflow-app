@@ -3,67 +3,42 @@ import { PrismaClient } from '@prisma/client';
 import { UserRepository } from '@/core/application/ports/user.repository';
 import { User } from '@/core/domain/entities/user.entity';
 
+import { UserMapper } from '../mappers/user.mapper';
+
 export class PrismaUserRepository implements UserRepository {
   constructor(private prisma: PrismaClient) {}
 
   async getUserById(id: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      include: {
-        completedChallenges: true,
-        solutions: true,
-      },
+      include: { solutions: true, completedChallenges: true },
     });
 
-    return user ? this.mapToDomain(user) : null;
+    return user ? UserMapper.toDomain(user) : null;
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: { email },
-      include: {
-        completedChallenges: true,
-        solutions: true,
-      },
+      include: { completedChallenges: true, solutions: true },
     });
 
-    return user ? this.mapToDomain(user) : null;
+    return user ? UserMapper.toDomain(user) : null;
   }
 
   async updateUser(id: string, data: Partial<User>): Promise<User> {
     const updatedUser = await this.prisma.user.update({
       where: { id },
-      data: {
-        name: data.username,
-        bio: data.bio,
-        image: data.avatar,
-      },
-      include: {
-        completedChallenges: true,
-        solutions: true,
-      },
+      data: UserMapper.toPrisma(data),
+      include: { completedChallenges: true, solutions: true },
     });
 
-    return this.mapToDomain(updatedUser);
+    return UserMapper.toDomain(updatedUser);
   }
 
   async deleteUser(id: string): Promise<void> {
     await this.prisma.user.delete({
       where: { id },
     });
-  }
-
-  private mapToDomain(prismaUser: any): User {
-    return new User(
-      prismaUser.id,
-      prismaUser.name || '',
-      prismaUser.email || '',
-      prismaUser.createdAt,
-      prismaUser.updatedAt,
-      prismaUser.completedChallenges.map((c: any) => c.id),
-      prismaUser.submissions.map((s: any) => s.id),
-      prismaUser.image,
-      prismaUser.bio,
-    );
   }
 }
