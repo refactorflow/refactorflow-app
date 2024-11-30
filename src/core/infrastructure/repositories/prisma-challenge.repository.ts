@@ -63,7 +63,7 @@ export class PrismaChallengeRepository implements ChallengeRepository {
   async updateSubmissionCount(id: string): Promise<void> {
     await this.prisma.challenge.update({
       where: { id },
-      data: { submissionCount: { increment: 1 } },
+      data: { solutionCount: { increment: 1 } },
     });
   }
 
@@ -124,7 +124,7 @@ export class PrismaChallengeRepository implements ChallengeRepository {
       prismaChallenge.createdAt,
       prismaChallenge.updatedAt,
       prismaChallenge.authorId,
-      prismaChallenge.submissionCount,
+      prismaChallenge.solutionCount,
       prismaChallenge.averageRating,
     );
   }

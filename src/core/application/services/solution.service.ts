@@ -7,11 +7,13 @@ export class SolutionService {
 
   async createSolution(data: CreateSolutionDTO, userId: string): Promise<SolutionResponseDTO> {
     try {
+      console.log('validatedData', data);
+
       const validatedData = CreateSolutionDTO.parse(data);
+
       const submission = await this.solutionRepository.createSolution({
         ...validatedData,
         userId,
-        status: 'PENDING',
         votes: {
           upvotes: 0,
           downvotes: 0,
@@ -25,16 +27,31 @@ export class SolutionService {
 
   async getUserChallengeSolution(userId: string, challengeId: string): Promise<SolutionResponseDTO | null> {
     try {
-      const solution = await this.solutionRepository.getSolutionsByUser(userId);
-      if (!solution) {
-        throw new NotFoundError('Challenge Submission');
-      }
+      const solutions = await this.solutionRepository.getSolutionsByUser(userId);
+      const solution = solutions.find(solution => solution.challengeId === challengeId);
 
-      return SolutionResponseDTO.parse(solution.find(solution => solution.challengeId === challengeId) || null);
+      console.log('solution', solutions);
+
+      if (!solution) return null;
+
+      const solutionData = {
+        id: solution.id,
+        challengeId: solution.challengeId,
+        challengeSlug: '',
+        userId: solution.userId,
+        title: solution.title,
+        repositoryUrl: solution.repositoryUrl,
+        description: solution.description,
+        votes: solution.votes,
+        implementationDetails: solution.implementationDetails || '', // Valeur par défaut si undefined
+        createdAt: solution.createdAt,
+        updatedAt: solution.updatedAt,
+      };
+
+      return SolutionResponseDTO.parse(solutionData);
     } catch (error) {
-      if (error instanceof NotFoundError) {
-        throw error;
-      }
+      if (error instanceof NotFoundError) console.log(error);
+      console.error('Parse error:', error);
       throw new BadRequestError('Error fetching user challenge submission', { error });
     }
   }
