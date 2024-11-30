@@ -10,16 +10,6 @@ export const CreateChallengeDTO = z.object({
     subCategory: z.array(z.string()),
   }),
   starterCodeUrl: z.string().url(),
-  requirements: z.object({
-    functional: z.array(z.string()),
-    technical: z.array(z.string()),
-  }),
-  expectedOutput: z
-    .object({
-      screenshots: z.array(z.string()),
-      videoDemo: z.string().optional(),
-    })
-    .optional(),
   authorId: z.string(),
 });
 
@@ -29,12 +19,6 @@ export const ChallengeResponseDTO = CreateChallengeDTO.extend({
   updatedAt: z.date(),
   submissionCount: z.number().default(0),
   averageRating: z.number().default(0),
-  expectedOutput: z
-    .object({
-      screenshots: z.array(z.string().url()),
-      videoDemo: z.string().url().optional(),
-    })
-    .nullish(),
 });
 
 export type CreateChallengeDTO = z.infer<typeof CreateChallengeDTO>;

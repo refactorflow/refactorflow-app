@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react';
 
-export default function Layout({ children }: PropsWithChildren) {
+export default function ChallengesLayout({ children }: PropsWithChildren) {
   return <div>{children}</div>;
 }

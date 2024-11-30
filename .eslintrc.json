@@ -18,6 +18,7 @@
     "unicorn/prefer-module": "off",
     "unicorn/no-null": "off",
     "unicorn/no-useless-undefined": "off",
+    "unicorn/no-abusive-eslint-disable": "off",
     "playwright/no-standalone-expect": "off"
   },
   "overrides": [

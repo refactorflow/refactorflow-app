@@ -79,8 +79,6 @@ model Challenge {
     categoryMain    CategoryMain
     subCategories   String[]
     starterCodeUrl  String
-    requirements    Json // Stored as JSON {functional: string[], technical: string[]}
-    expectedOutput  Json? // Stored as JSON {screenshots: string[], videoDemo?: string}
     createdAt       DateTime     @default(now())
     updatedAt       DateTime     @updatedAt
     authorId        String

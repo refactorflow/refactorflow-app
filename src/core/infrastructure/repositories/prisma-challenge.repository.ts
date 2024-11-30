@@ -109,18 +109,6 @@ export class PrismaChallengeRepository implements ChallengeRepository {
       subCategory: prismaChallenge.subCategories || [],
     };
 
-    const challengeRequirements = (prismaChallenge.requirements as { technical: string[]; functional: string[] }) ?? {
-      technical: [],
-      functional: [],
-    };
-
-    const challengeExpectedOutput = prismaChallenge.expectedOutput
-      ? {
-          screenshots: (prismaChallenge.expectedOutput as any)?.screenshots ?? [],
-          videoDemo: (prismaChallenge.expectedOutput as any)?.videoDemo,
-        }
-      : undefined;
-
     return new Challenge(
       prismaChallenge.id,
       prismaChallenge.title,
@@ -129,13 +117,11 @@ export class PrismaChallengeRepository implements ChallengeRepository {
       prismaChallenge.difficulty,
       challengeCategory,
       prismaChallenge.starterCodeUrl,
-      challengeRequirements,
       prismaChallenge.createdAt,
       prismaChallenge.updatedAt,
       prismaChallenge.authorId,
       prismaChallenge.submissionCount,
       prismaChallenge.averageRating,
-      challengeExpectedOutput,
     );
   }
 }

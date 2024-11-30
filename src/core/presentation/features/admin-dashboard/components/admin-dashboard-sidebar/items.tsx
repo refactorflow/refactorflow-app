@@ -6,12 +6,12 @@ import { LogoutButton } from '@/core/presentation/features/authentication/logout
 export const challengesNavigationItems = [
   {
     title: 'All Challenges',
-    url: '#',
+    url: URL.DASHBOARD_CHALLENGES,
     icon: Swords,
   },
   {
     title: 'Create Challenge',
-    url: URL.CREATECHALLENGE,
+    url: URL.DASHBOARD_CREATE_CHALLENGE,
     icon: Plus,
   },
 ];

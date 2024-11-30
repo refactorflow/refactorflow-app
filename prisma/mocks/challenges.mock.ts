@@ -9,10 +9,6 @@ export const challengesMOCK = [
     categoryMain: CategoryMain.BACKEND,
     subCategories: ['Node.js', 'Express'], // ✅ Correction
     starterCodeUrl: 'https://github.com/starter/rest-api', // ✅ Correction
-    requirements: {
-      functional: ['CRUD complet', 'Authentication JWT'],
-      technical: ['Architecture MVC', 'Documentation Swagger'],
-    },
     authorId: 'default-author-id',
     submissionCount: 0, // ✅ Correction
     averageRating: 0,

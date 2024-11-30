@@ -6,11 +6,11 @@ export const formCreateChallengeSchema = z.object({
   difficulty: z.enum(['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT']),
   category: z.object({
     main: z.enum(['FRONTEND', 'BACKEND', 'FULLSTACK']),
-    subCategory: z.array(z.string()),
+    subCategory: z.array(z.object({ label: z.string(), value: z.string() })),
   }),
   starterCodeUrl: z.string().url(),
-  requirements: z.object({
-    functional: z.array(z.string()),
-    technical: z.array(z.string()),
-  }),
+  // requirements: z.object({
+  //   functional: z.array(z.string()),
+  //   technical: z.array(z.string()),
+  // }),
 });

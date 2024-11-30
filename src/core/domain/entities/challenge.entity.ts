@@ -10,18 +10,10 @@ export class Challenge {
       subCategory: string[];
     },
     public starterCodeUrl: string,
-    public requirements: {
-      functional: string[];
-      technical: string[];
-    },
     public createdAt: Date,
     public updatedAt: Date,
     public authorId: string,
     public submissionCount: number,
     public averageRating: number,
-    public expectedOutput?: {
-      screenshots: string[];
-      videoDemo?: string;
-    },
   ) {}
 }
