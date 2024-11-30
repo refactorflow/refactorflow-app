@@ -12,10 +12,14 @@ export class PrismaChallengeRepository implements ChallengeRepository {
   ): Promise<Challenge> {
     const prismaChallenge = await this.prisma.challenge.create({
       data: {
-        ...challenge,
+        title: challenge.title,
+        slug: generateSlug(challenge.title),
+        description: challenge.description,
+        difficulty: challenge.difficulty,
         categoryMain: challenge.category.main,
         subCategories: challenge.category.subCategory,
-        slug: generateSlug(challenge.title),
+        starterCodeUrl: challenge.starterCodeUrl,
+        authorId: challenge.authorId,
       },
     });
 

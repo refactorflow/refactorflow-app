@@ -2,7 +2,7 @@ import { Challenge } from '@/core/domain/entities/challenge.entity';
 
 export interface ChallengeRepository {
   createChallenge(
-    challenge: Omit<Challenge, 'id' | 'createdAt' | 'updatedAt' | 'submissionCount' | 'averageRating'>,
+    challenge: Omit<Challenge, 'id' | 'createdAt' | 'updatedAt' | 'submissionCount' | 'averageRating' | 'slug'>,
   ): Promise<Challenge>;
   getChallengeById(id: string): Promise<Challenge | null>;
   getChallengeBySlug(slug: string): Promise<Challenge | null>;
