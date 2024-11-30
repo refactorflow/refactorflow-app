@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 export const CreateChallengeDTO = z.object({
   title: z.string().min(5).max(100),
-  slug: z.string().min(5).max(100),
   description: z.string().min(20),
   difficulty: z.enum(['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT']),
   category: z.object({
@@ -15,6 +14,7 @@ export const CreateChallengeDTO = z.object({
 
 export const ChallengeResponseDTO = CreateChallengeDTO.extend({
   id: z.string(),
+  slug: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
   submissionCount: z.number().default(0),

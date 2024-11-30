@@ -36,4 +36,4 @@ const MultipleSelectorForm = React.forwardRef<HTMLSelectElement, MultipleSelecto
 
 MultipleSelectorForm.displayName = 'MultipleSelectorForm';
 
-export default MultipleSelectorForm;
+export { MultipleSelectorForm };

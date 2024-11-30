@@ -9,8 +9,4 @@ export const formCreateChallengeSchema = z.object({
     subCategory: z.array(z.object({ label: z.string(), value: z.string() })),
   }),
   starterCodeUrl: z.string().url(),
-  // requirements: z.object({
-  //   functional: z.array(z.string()),
-  //   technical: z.array(z.string()),
-  // }),
 });
