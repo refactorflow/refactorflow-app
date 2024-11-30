@@ -11,7 +11,7 @@ export class PrismaUserRepository implements UserRepository {
       where: { id },
       include: {
         completedChallenges: true,
-        submissions: true,
+        solutions: true,
       },
     });
 
@@ -23,7 +23,7 @@ export class PrismaUserRepository implements UserRepository {
       where: { email },
       include: {
         completedChallenges: true,
-        submissions: true,
+        solutions: true,
       },
     });
 
@@ -40,7 +40,7 @@ export class PrismaUserRepository implements UserRepository {
       },
       include: {
         completedChallenges: true,
-        submissions: true,
+        solutions: true,
       },
     });
 

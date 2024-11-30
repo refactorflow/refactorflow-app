@@ -4,6 +4,8 @@ import { AuthButton } from '@/core/presentation/features/authentication/auth-but
 export default async function HomePage() {
   const session = await auth();
 
+  console.log(session?.user?.name);
+
   return (
     <div>
       {session && <div>Logged in as {session.user?.name}</div>}

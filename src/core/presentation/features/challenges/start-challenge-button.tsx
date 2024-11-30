@@ -1,9 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { Fragment, useState, useTransition } from 'react';
 
+import { URL } from '@/config/constants/url.constant';
 import { ChallengeResponseDTO } from '@/core/application/dtos/challenge.dto';
 import { startChallengeAction } from '@/core/presentation/actions/start-challenge.action';
+import { Button } from '@/core/presentation/components/common/ui/button';
 import { ButtonSubmit } from '@/core/presentation/components/common/ui/button-submit';
 
 type StartChallengeButtonProps = {
@@ -30,9 +33,15 @@ export const StartChallengeButton = ({ challenge, isStarted }: StartChallengeBut
 
   return (
     <Fragment>
-      <ButtonSubmit isPending={isPending} onClick={handleStartChallenge}>
-        {isStarted ? 'Visit Challenge Hub' : 'Start Challenge'}
-      </ButtonSubmit>
+      {isStarted ? (
+        <Button>
+          <Link href={URL.CHALLENGE_HUB(challenge.slug)}>Visit Challenge Hub</Link>
+        </Button>
+      ) : (
+        <ButtonSubmit isPending={isPending} onClick={handleStartChallenge}>
+          Start Challenge
+        </ButtonSubmit>
+      )}
 
       {errorMessage && <p className="text-red-500">{errorMessage}</p>}
     </Fragment>
