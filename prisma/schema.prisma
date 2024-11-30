@@ -43,22 +43,22 @@ model Session {
 }
 
 model User {
-    id                  String       @id @default(cuid())
+    id                  String      @id @default(cuid())
     name                String?
-    email               String?      @unique
+    email               String?     @unique
     emailVerified       DateTime?
     image               String?
-    bio                 String?      @db.Text
-    createdAt           DateTime     @default(now())
-    updatedAt           DateTime     @updatedAt
-    role                Role         @default(USER)
+    bio                 String?     @db.Text
+    createdAt           DateTime    @default(now())
+    updatedAt           DateTime    @updatedAt
+    role                Role        @default(USER)
     accounts            Account[]
     sessions            Session[]
-    submissions         Submission[]
+    submissions         Solution[]
     comments            Comment[]
     ratings             Rating[]
-    completedChallenges Challenge[]  @relation("CompletedChallenges")
-    startedChallenges   Challenge[]  @relation("StartedChallenges")
+    completedChallenges Challenge[] @relation("CompletedChallenges")
+    startedChallenges   Challenge[] @relation("StartedChallenges")
 }
 
 model VerificationToken {
@@ -84,7 +84,7 @@ model Challenge {
     authorId        String
     submissionCount Int          @default(0)
     averageRating   Float        @default(0)
-    submissions     Submission[]
+    submissions     Solution[]
     ratings         Rating[]
     tags            Tag[]        @relation("ChallengeTags")
     completedBy     User[]       @relation("CompletedChallenges")
@@ -93,10 +93,11 @@ model Challenge {
     @@index([difficulty, categoryMain])
 }
 
-model Submission {
+model Solution {
     id                    String           @id @default(cuid())
     challengeId           String
     userId                String
+    title                 String
     repositoryUrl         String
     livePreviewUrl        String?
     description           String           @db.Text
@@ -115,18 +116,18 @@ model Submission {
 }
 
 model Comment {
-    id              String     @id @default(cuid())
+    id              String    @id @default(cuid())
     submissionId    String
     userId          String
-    content         String     @db.Text
-    createdAt       DateTime   @default(now())
-    updatedAt       DateTime   @updatedAt
+    content         String    @db.Text
+    createdAt       DateTime  @default(now())
+    updatedAt       DateTime  @updatedAt
     parentCommentId String?
     reactions       Json // Stored as JSON array of {type: string, count: number, userIds: string[]}
-    submission      Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-    user            User       @relation(fields: [userId], references: [id])
-    parentComment   Comment?   @relation("CommentReplies", fields: [parentCommentId], references: [id])
-    replies         Comment[]  @relation("CommentReplies")
+    submission      Solution  @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+    user            User      @relation(fields: [userId], references: [id])
+    parentComment   Comment?  @relation("CommentReplies", fields: [parentCommentId], references: [id])
+    replies         Comment[] @relation("CommentReplies")
 
     @@index([submissionId])
     @@index([userId])
