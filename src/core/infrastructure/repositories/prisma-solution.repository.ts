@@ -29,6 +29,7 @@ export class PrismaSolutionRepository implements SolutionRepository {
         challenge: true,
       },
     });
+
     return solutions.map(solution => this.mapToDomain(solution));
   }
 
@@ -45,7 +46,9 @@ export class PrismaSolutionRepository implements SolutionRepository {
       prismaSolution.title,
       prismaSolution.repositoryUrl,
       prismaSolution.description,
-      votes,
+      prismaSolution.upvotes,
+      prismaSolution.downvotes,
+      prismaSolution.implementationDetails,
       prismaSolution.createdAt,
       prismaSolution.updatedAt,
     );

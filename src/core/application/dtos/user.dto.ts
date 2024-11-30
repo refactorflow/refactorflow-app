@@ -1,5 +1,18 @@
 import { z } from 'zod';
 
+export const UserResponseDTO = z.object({
+  id: z.string(),
+  username: z.string(),
+  email: z.string().email(),
+  avatar: z.string().nullable(),
+  bio: z.string().nullable(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  completedChallenges: z.array(z.string()).default([]),
+  solutions: z.array(z.string()).default([]),
+  role: z.enum(['USER', 'ADMIN']).default('USER'),
+});
+
 export const UpdateUserDTO = z
   .object({
     username: z.string().min(3).max(50).optional(),
@@ -10,18 +23,5 @@ export const UpdateUserDTO = z
     message: 'At least one field must be provided for update',
   });
 
-export type UpdateUserDTO = z.infer<typeof UpdateUserDTO>;
-
-export const UserResponseDTO = z.object({
-  id: z.string(),
-  username: z.string(),
-  email: z.string().email(),
-  avatar: z.string().url().nullable(),
-  bio: z.string().nullable(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  completedChallenges: z.array(z.string()),
-  submissions: z.array(z.string()),
-});
-
 export type UserResponseDTO = z.infer<typeof UserResponseDTO>;
+export type UpdateUserDTO = z.infer<typeof UpdateUserDTO>;

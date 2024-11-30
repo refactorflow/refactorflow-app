@@ -7,18 +7,15 @@ export class SolutionService {
 
   async createSolution(data: CreateSolutionDTO, userId: string): Promise<SolutionResponseDTO> {
     try {
-      console.log('validatedData', data);
-
       const validatedData = CreateSolutionDTO.parse(data);
 
       const submission = await this.solutionRepository.createSolution({
         ...validatedData,
         userId,
-        votes: {
-          upvotes: 0,
-          downvotes: 0,
-        },
+        upvotes: 0,
+        downvotes: 0,
       });
+
       return SolutionResponseDTO.parse(submission);
     } catch (error) {
       throw new BadRequestError('Error creating submission', { error });
@@ -30,8 +27,6 @@ export class SolutionService {
       const solutions = await this.solutionRepository.getSolutionsByUser(userId);
       const solution = solutions.find(solution => solution.challengeId === challengeId);
 
-      console.log('solution', solutions);
-
       if (!solution) return null;
 
       const solutionData = {
@@ -42,8 +37,9 @@ export class SolutionService {
         title: solution.title,
         repositoryUrl: solution.repositoryUrl,
         description: solution.description,
-        votes: solution.votes,
-        implementationDetails: solution.implementationDetails || '', // Valeur par défaut si undefined
+        upvotes: solution.upvotes,
+        downvotes: solution.downvotes,
+        implementationDetails: solution.implementationDetails || '',
         createdAt: solution.createdAt,
         updatedAt: solution.updatedAt,
       };
