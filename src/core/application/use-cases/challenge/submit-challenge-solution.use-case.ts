@@ -3,7 +3,7 @@ import { BadRequestError, NotFoundError } from '@/core/application/errors/custom
 import { ChallengeService } from '@/core/application/services/challenge.service';
 import { SubmissionService } from '@/core/application/services/submission.service';
 
-export class SubmitChallengeUseCase {
+export class SubmitChallengeSolutionUseCase {
   constructor(
     private readonly submissionService: SubmissionService,
     private readonly challengeService: ChallengeService,
