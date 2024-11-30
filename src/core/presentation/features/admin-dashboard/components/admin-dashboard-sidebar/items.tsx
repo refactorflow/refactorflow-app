@@ -1,16 +1,17 @@
 import { Plus, Swords } from 'lucide-react';
 
+import { URL } from '@/config/constants/url.constant';
 import { LogoutButton } from '@/core/presentation/features/authentication/logout-button';
 
 export const challengesNavigationItems = [
   {
     title: 'All Challenges',
-    url: '#',
+    url: URL.DASHBOARD_CHALLENGES,
     icon: Swords,
   },
   {
     title: 'Create Challenge',
-    url: '#',
+    url: URL.DASHBOARD_CREATE_CHALLENGE,
     icon: Plus,
   },
 ];

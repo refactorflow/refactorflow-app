@@ -10,7 +10,7 @@ export default function AdminDashboardLayout({ children }: PropsWithChildren) {
       <SidebarProvider>
         <AdminSidebar />
         <SidebarTrigger />
-        {children}
+        <div className="w-screen p-8">{children}</div>
       </SidebarProvider>
     </ProtectedAdminLayout>
   );

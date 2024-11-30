@@ -1,7 +1,9 @@
 'use client';
 
 import { ChevronDown, ChevronUp, User2 } from 'lucide-react';
+import Link from 'next/link';
 
+import { URL } from '@/config/constants/url.constant';
 import {
   Collapsible,
   CollapsibleContent,
@@ -34,7 +36,7 @@ export function AdminSidebar() {
         <SidebarGroup>
           {/* Logo/Brand Section */}
           <SidebarGroupLabel className="text-base font-bold tracking-tighter text-slate-950">
-            RefactorFlow
+            <Link href={URL.DASHBOARD}>RefactorFlow</Link>
           </SidebarGroupLabel>
 
           {/* Collapsible Navigation Section */}

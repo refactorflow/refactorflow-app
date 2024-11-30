@@ -1,5 +1,11 @@
 export const URL = {
   HOME: '/',
   LOGIN: '/login',
-  ADMIN: '/admin',
+
+  CHALLENGES: '/challenges',
+  CHALLENGE: '/challenges/:slug',
+
+  DASHBOARD: '/dashboard',
+  DASHBOARD_CHALLENGES: '/dashboard/challenges',
+  DASHBOARD_CREATE_CHALLENGE: '/dashboard/challenges/create-challenge',
 };
