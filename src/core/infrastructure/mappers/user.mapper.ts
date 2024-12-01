@@ -1,6 +1,7 @@
 import {
   Challenge as PrismaChallenge,
   Comment as PrismaComment,
+  PointTransaction as PrismaPointTransaction,
   Rating as PrismaRating,
   Solution as PrismaSolution,
   User as PrismaUser,
@@ -14,6 +15,7 @@ type PrismaUserWithRelations = PrismaUser & {
   ratings?: PrismaRating[];
   completedChallenges?: PrismaChallenge[];
   startedChallenges?: PrismaChallenge[];
+  pointTransactions?: PrismaPointTransaction[];
 };
 
 export const UserMapper = {
@@ -24,6 +26,10 @@ export const UserMapper = {
       prismaUser.email || '',
       prismaUser.image || null,
       prismaUser.bio || null,
+      prismaUser.totalPoints,
+      prismaUser.rank,
+      prismaUser.challengePoints,
+      prismaUser.interactionPoints,
       prismaUser.createdAt,
       prismaUser.updatedAt,
       prismaUser.role,

@@ -5,11 +5,10 @@ import { SolutionService } from '@/core/application/services/solution.service';
 import { UserService } from '@/core/application/services/user.service';
 import { StartChallengeUseCase } from '@/core/application/use-cases/challenge/start-challenge.use-case';
 import { SubmitChallengeSolutionUseCase } from '@/core/application/use-cases/challenge/submit-challenge-solution.use-case';
-
-import { ResendEmailAdapter } from '../adapters/resend-email.adapter';
-import { PrismaChallengeRepository } from '../repositories/prisma-challenge.repository';
-import { PrismaSolutionRepository } from '../repositories/prisma-solution.repository';
-import { PrismaUserRepository } from '../repositories/prisma-user.repository';
+import { ResendEmailAdapter } from '@/core/infrastructure/adapters/resend-email.adapter';
+import { PrismaChallengeRepository } from '@/core/infrastructure/repositories/prisma-challenge.repository';
+import { PrismaSolutionRepository } from '@/core/infrastructure/repositories/prisma-solution.repository';
+import { PrismaUserRepository } from '@/core/infrastructure/repositories/prisma-user.repository';
 
 class Container {
   private static instance: Container;
@@ -26,8 +25,10 @@ class Container {
 
   private readonly startChallengeUseCase = new StartChallengeUseCase(this.emailService, this.challengeService);
   private readonly submitChallengeSolutionUseCase = new SubmitChallengeSolutionUseCase(
+    this.userService,
     this.solutionService,
     this.challengeService,
+    this.emailService,
   );
 
   private constructor() {}

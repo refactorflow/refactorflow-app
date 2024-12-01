@@ -43,22 +43,27 @@ model Session {
 }
 
 model User {
-    id                  String      @id @default(cuid())
+    id                  String             @id @default(cuid())
     name                String?
-    email               String?     @unique
+    email               String?            @unique
     emailVerified       DateTime?
     image               String?
-    bio                 String?     @db.Text
-    createdAt           DateTime    @default(now())
-    updatedAt           DateTime    @updatedAt
-    role                Role        @default(USER)
+    bio                 String?            @db.Text
+    totalPoints         Int                @default(0)
+    rank                Int?               @default(0)
+    challengePoints     Int                @default(0)
+    interactionPoints   Int                @default(0)
+    createdAt           DateTime           @default(now())
+    updatedAt           DateTime           @updatedAt
+    role                Role               @default(USER)
     accounts            Account[]
     sessions            Session[]
     solutions           Solution[]
     comments            Comment[]
     ratings             Rating[]
-    completedChallenges Challenge[] @relation("CompletedChallenges")
-    startedChallenges   Challenge[] @relation("StartedChallenges")
+    pointTransactions   PointTransaction[]
+    completedChallenges Challenge[]        @relation("CompletedChallenges")
+    startedChallenges   Challenge[]        @relation("StartedChallenges")
 }
 
 model VerificationToken {
@@ -154,6 +159,20 @@ model Tag {
     @@index([category])
 }
 
+model PointTransaction {
+    id         String     @id @default(cuid())
+    userId     String
+    amount     Int
+    type       PointType
+    sourceId   String
+    sourceType SourceType
+    createdAt  DateTime   @default(now())
+    user       User       @relation(fields: [userId], references: [id])
+
+    @@index([userId])
+    @@index([createdAt])
+}
+
 enum Difficulty {
     BEGINNER
     INTERMEDIATE
@@ -177,4 +196,14 @@ enum TagCategory {
 enum Role {
     ADMIN
     USER
+}
+
+enum PointType {
+    COMPLETION_SUBMISSION
+    COMMENT_CREATED
+}
+
+enum SourceType {
+    COMPLETION
+    COMMENT
 }

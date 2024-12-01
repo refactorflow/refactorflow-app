@@ -2,7 +2,6 @@ import { env } from '@/config/env';
 import { resend } from '@/config/libs/resend';
 import { EmailSendingError } from '@/core/application/errors/custom.error';
 import { EmailRepository } from '@/core/application/ports/email.repository';
-import { Challenge } from '@/core/domain/entities/challenge.entity';
 
 export type EmailResponse = {
   success: boolean;
@@ -23,12 +22,12 @@ export class ResendEmailAdapter implements EmailRepository {
     }
   }
 
-  async sendSubmittedChallengeSolutionEmail(email: string, challenge: Challenge) {
+  async sendSubmittedChallengeSolutionEmail(email: string, challengeTitle: string) {
     const payload = await resend.emails.send({
       from: env.RESEND_EMAIL_SENDER,
       to: email,
       subject: 'You have submitted a challenge',
-      text: `You have submitted a ${challenge.title} challenge`,
+      text: `You have submitted a ${challengeTitle} challenge`,
     });
 
     if (payload.error) {

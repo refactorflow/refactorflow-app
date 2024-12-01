@@ -1,5 +1,4 @@
 import { EmailRepository } from '@/core/application/ports/email.repository';
-import { Challenge } from '@/core/domain/entities/challenge.entity';
 
 export class EmailService {
   constructor(private readonly emailRepository: EmailRepository) {}
@@ -8,7 +7,7 @@ export class EmailService {
     await this.emailRepository.sendStartedChallengeEmail(email);
   }
 
-  async sendSubmittedChallengeSolutionEmail(email: string, challenge: Challenge) {
-    await this.emailRepository.sendSubmittedChallengeSolutionEmail(email, challenge);
+  async sendSubmittedChallengeSolutionEmail(email: string, challengeTitle: string) {
+    await this.emailRepository.sendSubmittedChallengeSolutionEmail(email, challengeTitle);
   }
 }

@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 import { UserRepository } from '@/core/application/ports/user.repository';
+import { PointCategory } from '@/core/domain/constants/points.constant';
 import { User } from '@/core/domain/entities/user.entity';
 
 import { UserMapper } from '../mappers/user.mapper';
@@ -31,6 +32,18 @@ export class PrismaUserRepository implements UserRepository {
       where: { id },
       data: UserMapper.toPrisma(data),
       include: { completedChallenges: true, solutions: true },
+    });
+
+    return UserMapper.toDomain(updatedUser);
+  }
+
+  async updateUserPoints(id: string, type: PointCategory, value: number): Promise<User> {
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: {
+        totalPoints: { increment: value },
+        [type === 'COMPLETION' ? 'challengePoints' : 'interactionPoints']: { increment: value },
+      },
     });
 
     return UserMapper.toDomain(updatedUser);
