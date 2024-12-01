@@ -11,7 +11,7 @@ export class PrismaUserRepository implements UserRepository {
   async getUserById(id: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      include: { solutions: true, completedChallenges: true },
+      include: { solutions: true, comments: true, ratings: true, completedChallenges: true, startedChallenges: true },
     });
 
     return user ? UserMapper.toDomain(user) : null;
@@ -34,6 +34,13 @@ export class PrismaUserRepository implements UserRepository {
     });
 
     return UserMapper.toDomain(updatedUser);
+  }
+
+  async createUser(data: Partial<User>): Promise<User> {
+    const prismaUser = await this.prisma.user.create({
+      data: UserMapper.toPrisma(data),
+    });
+    return UserMapper.toDomain(prismaUser);
   }
 
   async deleteUser(id: string): Promise<void> {

@@ -11,5 +11,6 @@ export class Solution {
     public readonly implementationDetails: string | null,
     public readonly createdAt: Date,
     public readonly updatedAt: Date,
+    public readonly commentIds: string[] = [],
   ) {}
 }

@@ -4,10 +4,8 @@ export const CreateChallengeDTO = z.object({
   title: z.string().min(5).max(100),
   description: z.string().min(20),
   difficulty: z.enum(['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT']),
-  category: z.object({
-    main: z.enum(['FRONTEND', 'BACKEND', 'FULLSTACK']),
-    subCategory: z.array(z.string()),
-  }),
+  categoryMain: z.enum(['FRONTEND', 'BACKEND', 'FULLSTACK']),
+  subCategories: z.array(z.string()),
   starterCodeUrl: z.string().url(),
   authorId: z.string(),
 });

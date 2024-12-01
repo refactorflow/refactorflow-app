@@ -8,7 +8,6 @@ export class SolutionService {
   async createSolution(data: CreateSolutionDTO, userId: string): Promise<SolutionResponseDTO> {
     try {
       const validatedData = CreateSolutionDTO.parse(data);
-
       const submission = await this.solutionRepository.createSolution({
         ...validatedData,
         userId,
@@ -18,6 +17,7 @@ export class SolutionService {
 
       return SolutionResponseDTO.parse(submission);
     } catch (error) {
+      console.error('Parse error:', error);
       throw new BadRequestError('Error creating submission', { error });
     }
   }

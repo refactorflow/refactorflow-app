@@ -8,9 +8,12 @@ export const UserResponseDTO = z.object({
   bio: z.string().nullable(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  completedChallenges: z.array(z.string()).default([]),
-  solutions: z.array(z.string()).default([]),
   role: z.enum(['USER', 'ADMIN']).default('USER'),
+  solutionIds: z.array(z.string()).default([]),
+  commentsIds: z.array(z.string()).default([]),
+  ratingsIds: z.array(z.string()).default([]),
+  completedChallengeIds: z.array(z.string()).default([]),
+  startedChallengeIds: z.array(z.string()).default([]),
 });
 
 export const UpdateUserDTO = z
