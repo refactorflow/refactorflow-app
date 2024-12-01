@@ -35,11 +35,11 @@ export const StartChallengeButton = ({ challenge, isStarted }: StartChallengeBut
     <Fragment>
       {isStarted ? (
         <Button>
-          <Link href={URL.CHALLENGE_HUB(challenge.slug)}>Visit Challenge Hub</Link>
+          <Link href={URL.CHALLENGE_HUB(challenge.slug)}>Voir le hub du challenge</Link>
         </Button>
       ) : (
         <ButtonSubmit isPending={isPending} onClick={handleStartChallenge}>
-          Start Challenge
+          Commencez le challenge
         </ButtonSubmit>
       )}
 

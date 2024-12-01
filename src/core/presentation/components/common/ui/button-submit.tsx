@@ -8,7 +8,7 @@ export interface ButtonSubmitProps extends React.ButtonHTMLAttributes<HTMLButton
 export const ButtonSubmit = ({ isPending, children, ...props }: ButtonSubmitProps) => {
   return (
     <Button type="submit" {...props}>
-      {isPending ? 'Submitting...' : children}
+      {isPending ? 'Génération du challenge...' : children}
     </Button>
   );
 };
