@@ -1,7 +1,12 @@
 import { Solution } from '@/core/domain/entities/solution.entity';
 
+type CreateSolution = Partial<Solution> & {
+  challengeId: string;
+  userId: string;
+};
+
 export interface SolutionRepository {
-  createSolution(submission: Omit<Solution, 'id' | 'createdAt' | 'updatedAt' | 'comments'>): Promise<Solution>;
+  createSolution(solution: CreateSolution): Promise<Solution>;
   // getSolutionById(id: string): Promise<Solution | null>;
   // getSolutionsByChallenge(challengeId: string): Promise<Solution[]>;
   getSolutionsByUser(userId: string): Promise<Solution[]>;

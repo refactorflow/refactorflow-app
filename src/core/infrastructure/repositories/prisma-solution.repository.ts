@@ -3,23 +3,21 @@ import { PrismaClient, Solution as PrismaSolution } from '@prisma/client';
 import { SolutionRepository } from '@/core/application/ports/solution.repository';
 import { Solution } from '@/core/domain/entities/solution.entity';
 
+import { SolutionMapper } from '../mappers/solution.mapper';
+
 export class PrismaSolutionRepository implements SolutionRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async createSolution(
-    solution: Omit<Solution, 'id' | 'createdAt' | 'updatedAt' | 'comments' | 'votes'>,
-  ): Promise<Solution> {
+  async createSolution(solution: Partial<Solution>): Promise<Solution> {
     const prismaSolution = await this.prisma.solution.create({
-      data: {
-        challengeId: solution.challengeId,
-        userId: solution.userId,
-        title: solution.title,
-        repositoryUrl: solution.repositoryUrl,
-        description: solution.description,
+      data: SolutionMapper.toPrisma(solution),
+      include: {
+        challenge: true,
+        user: true,
       },
     });
 
-    return this.mapToDomain(prismaSolution);
+    return SolutionMapper.toDomain(prismaSolution);
   }
 
   async getSolutionsByUser(userId: string): Promise<Solution[]> {

@@ -54,12 +54,12 @@ export const ChallengeCard = ({ challenge }: ChallengeCardProps) => {
       <ChallengeCardHeader
         title={challenge.title}
         difficulty={challenge.difficulty}
-        category={challenge.category.main}
+        category={challenge.categoryMain}
         id={challenge.id}
       />
       <CardContent>
         <ChallengeCardDescription description={challenge.description} />
-        <ChallengeCardTechnologies technologies={challenge.category.subCategory} />
+        <ChallengeCardTechnologies technologies={challenge.subCategories} />
       </CardContent>
 
       <CardFooter>

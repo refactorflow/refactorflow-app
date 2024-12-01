@@ -9,10 +9,19 @@ export const CreateSolutionDTO = z.object({
   implementationDetails: z.string(),
 });
 
-export const SolutionResponseDTO = CreateSolutionDTO.extend({
+export const SolutionResponseDTO = z.object({
   id: z.string(),
+  challengeId: z.string(),
+  userId: z.string(),
+  title: z.string(),
+  repositoryUrl: z.string(),
+  description: z.string(),
+  upvotes: z.number(),
+  downvotes: z.number(),
+  implementationDetails: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
+  commentIds: z.array(z.string()),
 });
 
 export type CreateSolutionDTO = z.infer<typeof CreateSolutionDTO>;

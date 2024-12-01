@@ -30,10 +30,8 @@ export const CreateChallengeForm = () => {
       title: '',
       description: '',
       difficulty: 'BEGINNER',
-      category: {
-        main: 'FRONTEND',
-        subCategory: [{ label: 'Express', value: 'Express' }],
-      },
+      categoryMain: 'FRONTEND',
+      subCategories: [{ label: 'Express', value: 'Express' }],
       starterCodeUrl: '',
     },
   });
@@ -42,10 +40,8 @@ export const CreateChallengeForm = () => {
     startTransition(async () => {
       const payload = await createChallengeAction({
         ...values,
-        category: {
-          main: values.category.main,
-          subCategory: values.category.subCategory.map(subCategory => subCategory.value),
-        },
+        categoryMain: values.categoryMain,
+        subCategories: values.subCategories.map(subCategory => subCategory.value),
       });
 
       form.reset();
@@ -78,14 +74,14 @@ export const CreateChallengeForm = () => {
           />
           <SelectForm
             control={form.control}
-            name="category.main"
+            name="categoryMain"
             label="Catégorie"
             items={['FRONTEND', 'BACKEND', 'FULLSTACK']}
             placeholder="Catégorie"
           />
           <MultipleSelectorForm
             control={form.control}
-            name="category.subCategory"
+            name="subCategories"
             label="Sous-catégorie"
             options={multipleSelectorOptions}
             placeholder="Sous-catégorie"

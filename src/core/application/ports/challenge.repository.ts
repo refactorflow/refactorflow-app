@@ -1,14 +1,22 @@
 import { Challenge } from '@/core/domain/entities/challenge.entity';
 
+type CreateChallenge = Partial<Challenge> & {
+  title: string;
+  description: string;
+  difficulty: Challenge['difficulty'];
+  categoryMain: Challenge['categoryMain'];
+  subCategories: Challenge['subCategories'];
+  starterCodeUrl: Challenge['starterCodeUrl'];
+  authorId: Challenge['authorId'];
+};
+
 export interface ChallengeRepository {
-  createChallenge(
-    challenge: Omit<Challenge, 'id' | 'createdAt' | 'updatedAt' | 'submissionCount' | 'averageRating' | 'slug'>,
-  ): Promise<Challenge>;
+  createChallenge(challenge: CreateChallenge): Promise<Challenge>;
   getChallengeById(id: string): Promise<Challenge | null>;
   getChallengeBySlug(slug: string): Promise<Challenge | null>;
   getAllChallenges(filters?: {
     difficulty?: Challenge['difficulty'];
-    category?: Challenge['category']['main'];
+    categoryMain?: Challenge['categoryMain'];
     tags?: string[];
   }): Promise<Challenge[]>;
   updateChallenge(id: string, data: Partial<Challenge>): Promise<Challenge>;

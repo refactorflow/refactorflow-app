@@ -50,7 +50,7 @@ export class ChallengeService {
 
   async getAllChallenges(filters?: {
     difficulty?: Challenge['difficulty'];
-    category?: Challenge['category']['main'];
+    categoryMain?: Challenge['categoryMain'];
     tags?: string[];
   }): Promise<ChallengeResponseDTO[]> {
     try {

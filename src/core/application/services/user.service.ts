@@ -3,11 +3,11 @@ import { BadRequestError, NotFoundError } from '@/core/application/errors/custom
 import { UserRepository } from '@/core/application/ports/user.repository';
 
 export class UserService {
-  constructor(private readonly authRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async getUserProfile(userId: string): Promise<UserResponseDTO> {
     try {
-      const user = await this.authRepository.getUserById(userId);
+      const user = await this.userRepository.getUserById(userId);
       if (!user) throw new NotFoundError('User');
 
       return UserResponseDTO.parse({
@@ -18,9 +18,12 @@ export class UserService {
         bio: user.bio,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
-        completedChallenges: user.completedChallenges,
-        solutions: user.solutions.map(s => s.id),
         role: user.role,
+        solutionIds: user.solutionIds,
+        commentsIds: user.commentsIds,
+        ratingsIds: user.ratingsIds,
+        completedChallengeIds: user.completedChallengeIds,
+        startedChallengeIds: user.startedChallengeIds,
       });
     } catch (error) {
       if (error instanceof NotFoundError) throw error;
@@ -30,13 +33,13 @@ export class UserService {
 
   async updateUserProfile(userId: string, updateData: UpdateUserDTO): Promise<UserResponseDTO> {
     try {
-      const user = await this.authRepository.getUserById(userId);
+      const user = await this.userRepository.getUserById(userId);
       if (!user) {
         throw new NotFoundError('User');
       }
 
       const validatedData = UpdateUserDTO.parse(updateData);
-      const updatedUser = await this.authRepository.updateUser(userId, validatedData);
+      const updatedUser = await this.userRepository.updateUser(userId, validatedData);
       return UserResponseDTO.parse(updatedUser);
     } catch (error) {
       if (error instanceof NotFoundError) {
@@ -47,22 +50,22 @@ export class UserService {
   }
 
   async deleteUserAccount(userId: string): Promise<void> {
-    const user = await this.authRepository.getUserById(userId);
+    const user = await this.userRepository.getUserById(userId);
     if (!user) {
       throw new NotFoundError('User');
     }
 
-    await this.authRepository.deleteUser(userId);
+    await this.userRepository.deleteUser(userId);
   }
 
   async getUserCompletedChallenges(userId: string): Promise<string[]> {
     try {
-      const user = await this.authRepository.getUserById(userId);
+      const user = await this.userRepository.getUserById(userId);
       if (!user) {
         throw new NotFoundError('User');
       }
 
-      return UserResponseDTO.pick({ completedChallenges: true }).parse(user).completedChallenges;
+      return UserResponseDTO.pick({ completedChallengeIds: true }).parse(user).completedChallengeIds;
     } catch (error) {
       if (error instanceof NotFoundError) {
         throw error;
@@ -73,12 +76,12 @@ export class UserService {
 
   async getUserSubmissions(userId: string): Promise<string[]> {
     try {
-      const user = await this.authRepository.getUserById(userId);
+      const user = await this.userRepository.getUserById(userId);
       if (!user) {
         throw new NotFoundError('User');
       }
 
-      return UserResponseDTO.pick({ solutions: true }).parse(user).solutions;
+      return UserResponseDTO.pick({ solutionIds: true }).parse(user).solutionIds;
     } catch (error) {
       if (error instanceof NotFoundError) {
         throw error;

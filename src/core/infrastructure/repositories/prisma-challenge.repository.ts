@@ -1,57 +1,46 @@
-import { Challenge as PrismaChallenge, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 import { ChallengeRepository } from '@/core/application/ports/challenge.repository';
 import { Challenge } from '@/core/domain/entities/challenge.entity';
-import { generateSlug } from '@/core/domain/utils/generate-slug';
+
+import { ChallengeMapper } from '../mappers/challenge.mapper';
 
 export class PrismaChallengeRepository implements ChallengeRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async createChallenge(
-    challenge: Omit<Challenge, 'id' | 'createdAt' | 'updatedAt' | 'submissionCount' | 'averageRating'>,
-  ): Promise<Challenge> {
+  async createChallenge(data: Partial<Challenge>): Promise<Challenge> {
     const prismaChallenge = await this.prisma.challenge.create({
-      data: {
-        title: challenge.title,
-        slug: generateSlug(challenge.title),
-        description: challenge.description,
-        difficulty: challenge.difficulty,
-        categoryMain: challenge.category.main,
-        subCategories: challenge.category.subCategory,
-        starterCodeUrl: challenge.starterCodeUrl,
-        authorId: challenge.authorId,
-      },
+      data: ChallengeMapper.toPrisma(data),
     });
-
-    return this.mapToDomain(prismaChallenge);
+    return ChallengeMapper.toDomain(prismaChallenge);
   }
 
   async getChallengeById(id: string): Promise<Challenge | null> {
     const prismaChallenge = await this.prisma.challenge.findUnique({
       where: { id },
     });
-    return prismaChallenge ? this.mapToDomain(prismaChallenge) : null;
+    return prismaChallenge ? ChallengeMapper.toDomain(prismaChallenge) : null;
   }
 
   async getChallengeBySlug(slug: string): Promise<Challenge | null> {
     const prismaChallenge = await this.prisma.challenge.findUnique({
       where: { slug },
     });
-    return prismaChallenge ? this.mapToDomain(prismaChallenge) : null;
+    return prismaChallenge ? ChallengeMapper.toDomain(prismaChallenge) : null;
   }
 
   async getAllChallenges(): Promise<Challenge[]> {
     const challenges = await this.prisma.challenge.findMany();
 
-    return challenges.map(challenge => this.mapToDomain(challenge));
+    return challenges.map(challenge => ChallengeMapper.toDomain(challenge));
   }
 
   async updateChallenge(id: string, data: Partial<Challenge>): Promise<Challenge> {
     const prismaChallenge = await this.prisma.challenge.update({
       where: { id },
-      data,
+      data: ChallengeMapper.toPrisma(data),
     });
-    return this.mapToDomain(prismaChallenge);
+    return ChallengeMapper.toDomain(prismaChallenge);
   }
 
   async deleteChallenge(id: string): Promise<void> {
@@ -89,7 +78,7 @@ export class PrismaChallengeRepository implements ChallengeRepository {
     const challenges = await this.prisma.challenge.findMany({
       where: { startedBy: { some: { id: userId } } },
     });
-    return challenges.map(challenge => this.mapToDomain(challenge));
+    return challenges.map(challenge => ChallengeMapper.toDomain(challenge));
   }
 
   async isStartedByUser(challengeId: string, userId: string): Promise<boolean> {
@@ -105,27 +94,5 @@ export class PrismaChallengeRepository implements ChallengeRepository {
     });
 
     return count > 0;
-  }
-
-  private mapToDomain(prismaChallenge: PrismaChallenge): Challenge {
-    const challengeCategory = {
-      main: prismaChallenge.categoryMain,
-      subCategory: prismaChallenge.subCategories || [],
-    };
-
-    return new Challenge(
-      prismaChallenge.id,
-      prismaChallenge.title,
-      prismaChallenge.slug,
-      prismaChallenge.description,
-      prismaChallenge.difficulty,
-      challengeCategory,
-      prismaChallenge.starterCodeUrl,
-      prismaChallenge.createdAt,
-      prismaChallenge.updatedAt,
-      prismaChallenge.authorId,
-      prismaChallenge.solutionCount,
-      prismaChallenge.averageRating,
-    );
   }
 }

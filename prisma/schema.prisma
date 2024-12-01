@@ -69,7 +69,6 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-// New Models for the Challenge Platform
 model Challenge {
     id             String       @id @default(cuid())
     title          String
