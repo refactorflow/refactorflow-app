@@ -8,7 +8,7 @@ import { SolutionMapper } from '../mappers/solution.mapper';
 export class PrismaSolutionRepository implements SolutionRepository {
   constructor(private prisma: PrismaClient) {}
 
-  async createSolution(solution: Partial<Solution>): Promise<Solution> {
+  async createSolution(solution: Solution): Promise<Solution> {
     const prismaSolution = await this.prisma.solution.create({
       data: SolutionMapper.toPrisma(solution),
       include: {

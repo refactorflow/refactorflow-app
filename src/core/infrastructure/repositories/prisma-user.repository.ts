@@ -3,8 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { UserRepository } from '@/core/application/ports/user.repository';
 import { PointCategory } from '@/core/domain/constants/points.constant';
 import { User } from '@/core/domain/entities/user.entity';
-
-import { UserMapper } from '../mappers/user.mapper';
+import { UserMapper } from '@/core/infrastructure/mappers/user.mapper';
 
 export class PrismaUserRepository implements UserRepository {
   constructor(private prisma: PrismaClient) {}
