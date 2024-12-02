@@ -1,24 +1,26 @@
-import { CreateSolutionDTO, SolutionResponseDTO } from '@/core/application/dtos/solution.dto';
+import { SolutionResponseDTO } from '@/core/application/dtos/solution.dto';
 import { BadRequestError, NotFoundError } from '@/core/application/errors/custom.error';
 import { SolutionRepository } from '@/core/application/ports/solution.repository';
+import { Solution } from '@/core/domain/entities/solution.entity';
+
+export type CreateSolutionParams = {
+  challengeId: string;
+  userId: string;
+  title: string;
+  repositoryUrl: string;
+  description: string;
+  implementationDetails?: string;
+};
 
 export class SolutionService {
   constructor(private readonly solutionRepository: SolutionRepository) {}
 
-  async createSolution(data: CreateSolutionDTO, userId: string): Promise<SolutionResponseDTO> {
+  async createSolution(data: CreateSolutionParams): Promise<Solution> {
     try {
-      const validatedData = CreateSolutionDTO.parse(data);
-      const submission = await this.solutionRepository.createSolution({
-        ...validatedData,
-        userId,
-        upvotes: 0,
-        downvotes: 0,
-      });
-
-      return SolutionResponseDTO.parse(submission);
+      const solution = Solution.create(data);
+      return await this.solutionRepository.createSolution(solution);
     } catch (error) {
-      console.error('Parse error:', error);
-      throw new BadRequestError('Error creating submission', { error });
+      throw new BadRequestError('Error creating solution', { error });
     }
   }
 

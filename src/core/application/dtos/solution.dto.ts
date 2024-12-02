@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 export const CreateSolutionDTO = z.object({
-  challengeId: z.string(),
   challengeSlug: z.string(),
   title: z.string().min(5),
   repositoryUrl: z.string().url(),
