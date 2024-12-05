@@ -7,4 +7,9 @@ import './src/config/env.js';
 /** @type {import("next").NextConfig} */
 const config = {};
 
+// image domaine from github
+config.images = {
+  domains: ['avatars.githubusercontent.com'],
+};
+
 export default config;
